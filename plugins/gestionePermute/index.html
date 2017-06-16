@@ -21,7 +21,7 @@
 				$(document).ready(function() {
 					var plugin = new Plugin(true);
 					plugin.init();
-					
+
 				});
 			})(jQuery);
 		</script>
@@ -93,14 +93,22 @@
 							<div id="noPermute" class=" col-sm-12 container-fluid alert alert-danger" role="alert"></div>
 						</DIV>
 					</section>
+					<section class="errori" hidden>
+						<div id="errori" class="col-sm-12 alert alert-danger alert-dismissible fade show" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<div id="errortext" class="col-sm-12 alert alert-danger"></div>
+						</div>
+					</section>
 					<div class="section"></div>
 					<section class="dummy-pricing">
 						<section id="features">
 							<!-- row 7 -->
 							<div class="row">
-								<div class="col-sm-12 alert alert-warning">
-									<h1 name="sectionMandatory" class="text-center display-4">Permute</h1>
-								</div>
+								<!-- <div class="col-sm-12 alert alert-warning">
+								<h1 name="sectionMandatory" class="text-center display-4">Permute</h1>
+								</div> -->
 								<div class="col-sm-12 alert alert-warning">
 									<div id="headerPermute" class="row"></div>
 								</div>
@@ -127,13 +135,16 @@
 							</form>
 							<form id="frmMainPermutePending" style="display: none;">
 								<form id="rendered-form">
-									<div class="row">
-										<div class="col-sm-12 alert alert-info">
-											<h1 name="closePermute" class="text-center  display-4">Chiusura</h1>
+									<div class="alert alert-info form-group row">
+										<div class="col-sm-12 ">
+											<!-- <h1 name="closePermute" class="text-center  display-4">Lavorazione permute</h1> -->
+											<button type="button" class="btn btn-info col-xs-12 col-sm-12 col-md-12" data-toggle="collapse" href="#divClosePermute" aria-expanded="false" aria-controls="divClosePermute">
+												Lavorazione Permute
+											</button>
 										</div>
 									</div>
 									<div class="row">
-										<div id="divClosePermute" class="container-fluid alert alert-info">
+										<div id="divClosePermute" class="collapse container-fluid alert alert-info">
 											<div class="fb-select col-xs-12 col-md-6 col-sm-6 form-group field-SRT_CollaudoLinea">
 												<label for="SRT_CollaudoLinea" class="fb-select-label">Collaudo linea<span class="required">*</span> </label>
 												<select type="select" required="" class="form-control special-control" name="SRT_CollaudoLinea" id="SRT_CollaudoLinea" aria-required="true">

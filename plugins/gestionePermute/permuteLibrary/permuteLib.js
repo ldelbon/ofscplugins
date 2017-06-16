@@ -152,6 +152,7 @@ function controlliSpeciali(jsonFormChiusura, jsonFromSelected) {
 			$.extend(true, jsonFromSelected[mySelected], jsonFormChiusura);
 
 			jsonFromSelected[mySelected].astatus = 'suspended';
+			jsonFromSelected[mySelected].SRT_ChkMat = -1;
 
 			tipoImpianto = jsonFromSelected[mySelected].SRT_TipoImpianto;
 			CodProgNazionale = jsonFromSelected[mySelected].SRT_CodProgNazionale;
@@ -181,11 +182,12 @@ function checkNextActivity(data) {
 		appt_number : null,
 		astatus : null
 	};
+	debugger;
 	for (var key in data) {
 		switch (data[key].astatus) {
 		case "started":
 		case "pending":
-			if (retJson.nPosInRoute >= data[key].position_in_route && data[key].position_in_route != null) {
+			if (retJson.nPosInRoute >= data[key].position_in_route && data[key].position_in_route != null && data[key].position_in_route >0) {
 				retJson.nPosInRoute = data[key].position_in_route;
 				retJson.aid = key;
 				retJson.SRT_Tipinterv = data[key].SRT_Tipinterv;
@@ -225,7 +227,7 @@ function getPendingPermute(data, retJsonObject) {
 
 	var canDelete = false;
 	for (var key in data) {
-		canDelete = ((data[key].astatus == "pending") && (data[key].hasOwnProperty("SRT_Tipinterv")) && (data[key].SRT_Tipinterv == "WB") && (retJsonObject.SRT_Centrale == data[key].SRT_Centrale));
+		canDelete = ((data[key].astatus == "pending") && (data[key].hasOwnProperty("SRT_Tipinterv")) && (data[key].SRT_Tipinterv == "WB") && (retJsonObject.SRT_Centrale == data[key].SRT_Centrale)&& (data[key].position_in_route>0));
 		if (!canDelete) {
 			delete data[key];
 		}

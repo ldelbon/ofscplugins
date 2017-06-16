@@ -203,9 +203,11 @@
 
                                 break;
                             case 'error':
+                            debugger;
                                 data.errors = data.errors || {
                                     error: 'Unknown error'
                                 };
+
                                 this._showError(data.errors);
 
                                 break;
@@ -233,7 +235,9 @@
          * @private
          */
         _showError: function(errorData) {
-            alert(JSON.stringify(errorData, null, 4));
+        	// debugger;
+            var test = 'Attenzione: si è verificato un errore; si prega di contattare l\'amministratore inviando la schermata di errore.\n'+JSON.stringify(errorData, null, 4);
+            alert(test);
         },
 
         /**
@@ -385,9 +389,7 @@
             }.bind(this));
             
             $('#btnLavora').click(function(e) {
-            	debugger;
-                try {
-                    var jsonTmp = JSON.parse(_getLocalStorage('jsonClosePermute'));
+            	    var jsonTmp = JSON.parse(_getLocalStorage('jsonClosePermute'));
                     var jsonFormChiusura = {};
                     var jsonFromSelected = {};
 
@@ -411,9 +413,6 @@
                   	
                   	this._sendPostMessageData(jsonClosePermute);
                   	                    
-                } catch (e) {
-                    console.log('jeex->>>>>>>><' + e.stack);
-                }
                 _deleteLocalStorage('jsonClosePermute');
             }.bind(this));
             
