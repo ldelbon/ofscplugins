@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html manifest="./cache.manifest">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../shared/bootstrap/css/base.css">
+		<link rel="stylesheet" href="../shared/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" href="../shared/bootstrap/css/bootstrap-toggle.min.css">
+		<link rel="stylesheet" href="./style.css">
+		<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="../shared/lib/jquery.serializejson.min.js"></script>
+		<!-- <script src="signature.js"></script> -->
+		<script type="text/javascript" src="plugin.js"></script>
+		<script type="text/javascript" src="../shared/lib/CloudToAndroidLibrary.js"></script>
+		<script src="permuteLibrary/permuteLib.js"></script>
+		<script src="permuteLibrary/permuteObjects.js"></script>
+		<script type="text/javascript">
+			(function($) {
+				$(document).ready(function() {
+					var plugin = new Plugin(true);
+					plugin.init();
+					
+				});
+			})(jQuery);
+		</script>
+	</head>
+
+	<body>
+		<header class="modal-header">
+			<div class="container-fluid">
+				<!-- row 1 -->
+				<div class="row">
+					<a class="brand pull-left">Sirti</a>
+					<ul class="list-inline list-unstyled pull-right">
+						<li>
+							Gestione Permute
+						</li>
+					</ul>
+				</div>
+			</div>
+		</header>
+		<!--     <section id="features"> -->
+		<section id="pricing">
+			<div id="divPricing" class="container-fluid">
+				<div class="content">
+					<section style="display: none;">
+						<div class="row container-fluid alert alert-danger">
+							<div class=" col-sm-12">
+								<h1 name="sectionDebug" class="text-center row">Debug info</h1>
+							</div>
+							<div class="section section__local-storage">
+								<h2>Local Storage</h2>
+								<button class="button json_local_storage_toggle" type="button">
+									View Local Storage
+								</button>
+								<div class="json json__local-storage"></div>
+							</div>
+							<div class="section section__ofsc-data">
+								<h2>OFSC Data</h2>
+								<div>
+									<button class="button json_request_toggle btn btn-primary" type="button">
+										View received JSON
+									</button>
+									<button class="button json_response_toggle btn btn-primary" type="button">
+										Edit JSON to send
+									</button>
+								</div>
+								<div class="json json__request"></div>
+								<div class="json json__response" contenteditable></div>
+								<div>
+									<button class="button submit btn btn-primary" type="button">
+										Submit
+									</button>
+									<div class="back_method">
+										and go to
+										<select class="back_method_select" title="Redirect to screen after submit">
+											<option value="default">Previous screen</option>
+											<option value="activity_by_id">Activity #</option>
+											<option value="next_activity">Next pending Activity</option>
+											<option value="activity_list">Activity List</option>
+										</select>
+										<input class="form-control back_activity_id" type="text" title="Activity ID" placeholder="Activity ID">
+									</div>
+								</div>
+								<div class="form form-inline"></div>
+							</div>
+						</div>
+					</section>
+					<section class="noPermute" hidden>
+						<DIV class="row">
+							<div id="noPermute" class=" col-sm-12 container-fluid alert alert-danger" role="alert"></div>
+						</DIV>
+					</section>
+					<div class="section"></div>
+					<section class="dummy-pricing">
+						<section id="features">
+							<!-- row 7 -->
+							<div class="row">
+								<div class="col-sm-12 alert alert-warning">
+									<h1 name="sectionMandatory" class="text-center display-4">Permute</h1>
+								</div>
+								<div class="col-sm-12 alert alert-warning">
+									<div id="headerPermute" class="row"></div>
+								</div>
+							</div>
+							<div id="previa" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											×
+										</button>
+										<h3 id="myModalLabel">Note</h3>
+									</div>
+									<div class="modal-body" id="modals"></div>
+									<div class="modal-footer">
+										<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">
+											Chiudi
+										</button>
+									</div>
+								</div>
+							</div>
+							<!-- row 8 -->
+							<form id="frmMandatMat" class="">
+								<div id="mandMatCont" class="row "></div>
+							</form>
+							<form id="frmMainPermutePending" style="display: none;">
+								<form id="rendered-form">
+									<div class="row">
+										<div class="col-sm-12 alert alert-info">
+											<h1 name="closePermute" class="text-center  display-4">Chiusura</h1>
+										</div>
+									</div>
+									<div class="row">
+										<div id="divClosePermute" class="container-fluid alert alert-info">
+											<div class="fb-select col-xs-12 col-md-6 col-sm-6 form-group field-SRT_CollaudoLinea">
+												<label for="SRT_CollaudoLinea" class="fb-select-label">Collaudo linea<span class="required">*</span> </label>
+												<select type="select" required="" class="form-control special-control" name="SRT_CollaudoLinea" id="SRT_CollaudoLinea" aria-required="true">
+													<option value="option-1">Option 1</option>
+													<option value="option-2">Option 2</option>
+													<option value="option-3">Option 3</option>
+												</select>
+											</div>
+											<div class="fb-select col-xs-12 col-sm-6 col-md-6 form-group field-SRT_Permuta_eseguita">
+												<label for="SRT_Permuta_eseguita" class="fb-select-label">Permuta eseguita<span class="required">*</span> </label>
+												<select type="select" required="" class="form-control special-control" name="SRT_Permuta_eseguita" id="SRT_Permuta_eseguita" aria-required="true">
+													<option value="option-1">Option 1</option>
+													<option value="option-2">Option 2</option>
+													<option value="option-3">Option 3</option>
+												</select>
+											</div>
+											<div class="fb-select col-xs-12 col-md-6 col-sm-6 form-group field-SRT_Prova_SCIA">
+												<label for="SRT_Prova_SCIA" class="fb-select-label">Prova Next SCIA<span class="required">*</span> </label>
+												<select type="select" required="" class="form-control special-control" name="SRT_Prova_SCIA" id="SRT_Prova_SCIA" aria-required="true">
+													<option value="option-1" selected="true">Option 1</option>
+													<option value="option-2">Option 2</option>
+													<option value="option-3">Option 3</option>
+												</select>
+											</div>
+											<div class="fb-text col-xs-12 col-md-6 col-sm-6 form-group field-codice-scia">
+												<label for="codice-scia" class="fb-text-label">Codice SCIA </label>
+												<input type="number" class="form-control special-control" name="SRT_PT_TI_Codice_SCIA" id="codice-scia">
+											</div>
+											<div class="fb-text col-xs-12 col-md-6 col-sm-6 form-group field-codice-collaudo">
+												<label for="codice-collaudo" class="fb-text-label">Codice collaudo </label>
+												<input type="text" class="form-control special-control" name="SRT_PT_ES_Codice_Collaudo" id="codice-collaudo">
+											</div>
+											<!-- <div class="fb-text col-xs-6 col-md-6 form-group field-data-chiusura-pdr">
+											<label for="data-chiusura-pdr" class="fb-text-label">Data chiusura PDR </label>
+											<input type="text" class="form-control" name="data-chiusura-pdr" id="data-chiusura-pdr" readonly="true">
+											</div>
+											<div class="fb-text col-xs-6 col-md-6 form-group field-flag-percorso-agg">
+											<label for="flag-percorso-agg" class="fb-text-label">Flag percorso agg. </label>
+											<input type="text" class="form-control" name="flag-percorso-agg" id="flag-percorso-agg" readonly="true">
+											</div>
+											<div class="fb-text col-xs-6 col-md-6 form-group field-esito-percorso-rl">
+											<label for="esito-percorso-rl" class="fb-text-label">Esito percorso RL </label>
+											<input type="text" class="form-control" name="esito-percorso-rl" id="esito-percorso-rl" readonly="true">
+											</div> -->
+											<div class="fb-select col-xs-12 col-md-6 col-sm-6 form-group field-SRT_PT_IC_CessazioneULL">
+												<label for="SRT_PT_IC_CessazioneULL" class="fb-select-label">Cessazione ULL</label>
+												<select type="select" class="form-control special-control" name="SRT_PT_IC_CessazioneULL" id="SRT_PT_IC_CessazioneULL">
+													<option value="option-1" selected="true">Option 1</option>
+													<option value="option-2">Option 2</option>
+													<option value="option-3">Option 3</option>
+												</select>
+											</div>
+											<!-- <div class="fb-text col-xs-6 col-md-6 form-group field-prima-data-dac">
+											<label for="prima-data-dac" class="fb-text-label">Prima data dac </label>
+											<input type="text" class="form-control" name="prima-data-dac" id="prima-data-dac" readonly="true">
+											</div> -->
+										</div>
+									</div>
+									<div class=" alert alert-info form-group row ">
+										<div class=" col-xs-6 col-md-6">
+											<button type="submit" id="btnAnnulla" class="form-control btn btn-danger">
+												Annulla
+											</button>
+										</div>
+										<div class=" col-xs-6 col-md-6">
+											<button type="submit" id="btnLavora" class="form-control  btn btn-success" disabled>
+												Lavora
+											</button>
+										</div>
+									</div>
+								</form>
+								<form id="frmLavora"></form>
+							</form>
+						</section>
+						<!-- <section id="features">
+
+						<div class="row">
+						<div class="col-sm-12 alert alert-info">
+						<h1 name="pendingPermute" class="text-center  display-4">Permute da lavorare</h1>
+						</div>
+						</div>
+
+						<div class="row">
+						<div id="divPendingPermute" class="container-fluid alert alert-info"></div>
+						</div>
+						</section> -->
+					</section>
+					<!-- <section id="features">
+					<form id="frmSend">
+					<div class=" alert alert-info form-group row ">
+					<div class=" col-xs-6 col-md-6">
+					<button type="submit" id="btnIndietro" class="form-control btn btn-danger">
+					Indietro
+					</button>
+					</div>
+					<div class=" col-xs-6 col-md-6">
+					<button type="submit" id="btnCloseAll" class="form-control  btn btn-success" disabled>
+					Chiudi Tutto
+					</button>
+					</div>
+					</div>
+					<div class=" alert alert-info form-group row ">
+					<div class=" col-xs-6 col-md-6">
+					<button type="submit" id="btnTest" class="form-control  btn btn-success">
+					Chiudi Test
+					</button>
+					</div>
+					</div>
+					</form>
+					</section> -->
+				</div>
+			</div>
+		</section>
+		<footer>
+			<div class="container-fluid">
+				<div class="col-xs-12 col-sm-2">
+					<img src="../shared/imgs/logo.png" class="img-responsive">
+				</div>
+				<div class="col-xs-12 col-sm-2 pull-right">
+					<address>
+						<strong>Sirti</strong> Via Stamira D’Ancona 9 - 20127 Milano (MI)
+						<br>
+						<abbr title="Phone">P:</abbr> +39 02.9588.1
+					</address>
+				</div>
+			</div>
+		</footer>
+		<!-- <script src="../shared/bootstrap/js/jquery-3.1.1.min.js"></script> -->
+		<script src="../shared/bootstrap/js/bootstrap.js"></script>
+		<script src="../shared/bootstrap/js/bootstrap-toggle.min.js"></script>
+		<script src="../shared/lib/bootbox.min.js"></script>
+
+		<script src="../shared/bootstrap/js/main.js"></script>
+	</body>
+
+</html>
