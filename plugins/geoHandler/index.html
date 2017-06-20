@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html manifest="./cache.manifest">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../shared/bootstrap/css/base.css">
+		<link rel="stylesheet" href="../shared/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" href="../shared/bootstrap/css/bootstrap-toggle.min.css">
+		<link rel="stylesheet" href="./style.css">
+		<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="../shared/lib/jquery.serializejson.min.js"></script>
+		
+        <link rel="shortcut icon" type="image/x-icon" href="../shared/imgs/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="../shared/imgs/favicon.ico" />		
+		<!-- <script src="signature.js"></script> -->
+		<script src="geoHandlerLibrary/geoObjects.js"></script>
+		<script src="geoHandlerLibrary/geoLib.js"></script>
+		<script type="text/javascript" src="../shared/lib/CloudToAndroidLibrary.js"></script>
+		<script type="text/javascript" src="plugin.js"></script>
+		<script type="text/javascript">
+			(function($) {
+				$(document).ready(function() {
+					resetPlugin();
+					var plugin = new Plugin(true);
+					plugin.init();
+					plugin.getGeo();
+				});
+			})(jQuery);
+		</script>
+	</head>
+
+	<body>
+		<header class="modal-header">
+			<div class="container-fluid">
+				<!-- row 1 -->
+				<div class="row">
+					<a class="brand pull-left">Sirti</a>
+					<ul class="list-inline list-unstyled pull-right">
+						<li>
+							Gestione geolocalizzazione
+						</li>
+					</ul>
+				</div>
+			</div>
+		</header>
+		<!--     <section id="features"> -->
+		<section id="pricing">
+			<div id="divPricing" class="container-fluid">
+				<div class="content">
+					<section style="display: none;">
+					<!-- <section style=""> -->
+						<div class="row container-fluid alert alert-danger">
+							<div class=" col-sm-12">
+								<h1 name="sectionDebug" class="text-center row">Debug info</h1>
+							</div>
+							<div class="section section__local-storage">
+								<h2>Local Storage</h2>
+								<button class="button json_local_storage_toggle" type="button">
+									View Local Storage
+								</button>
+								<div class="json json__local-storage"></div>
+							</div>
+							<div class="section section__ofsc-data">
+								<h2>OFSC Data</h2>
+								<div>
+									<button class="button json_request_toggle btn btn-primary" type="button">
+										View received JSON
+									</button>
+									<button class="button json_response_toggle btn btn-primary" type="button">
+										Edit JSON to send
+									</button>
+								</div>
+								<div class="json json__request"></div>
+								<div class="json json__response" contenteditable></div>
+								<div>
+									<button class="button submit btn btn-primary" type="button">
+										Submit
+									</button>
+									<div class="back_method">
+										and go to
+										<select class="back_method_select" title="Redirect to screen after submit">
+											<option value="default">Previous screen</option>
+											<option value="activity_by_id">Activity #</option>
+											<option value="next_activity">Next pending Activity</option>
+											<option value="activity_list">Activity List</option>
+										</select>
+										<input class="form-control back_activity_id" type="text" title="Activity ID" placeholder="Activity ID">
+									</div>
+								</div>
+								<div class="form form-inline"></div>
+							</div>
+						</div>
+					</section>
+					<section class="dummy-pricing">
+						<section id="features">
+							<!-- row 7 -->
+							<!-- row 8 -->
+							<div id="previa" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											×
+										</button>
+										<h3 id="myModalLabel">Attenzione</h3>
+									</div>
+									<div class="modal-body" id="modals"></div>
+									<div class="modal-footer">
+										<button class="btn btn-alert" data-dismiss="modal" aria-hidden="true">
+											Chiudi
+										</button>
+									</div>
+								</div>
+							</div>
+							<form id="frmMandatMat" class="">
+								<div id="mandMatCont" class="row "></div>
+							</form>
+							<form id="frmMainPermutePending">
+								<form id="rendered-form">
+									<div id="divAlertHeader" class="alert alert-info row" role="alert">
+										<h1 class="info-heading ">Attenzione : in questo istante viene rilevata la Sua posizione. Conferma?</h1>
+
+									</div>
+									<div id="idAlert" class="alert alert-danger row">
+										<button type="button" class="close" data-dismiss="alert">
+											×
+										</button>
+									</div>
+									<div id="divConferma" class="alert alert-info form-group row">
+										<div class="col-sm-12 ">
+											<!-- <h1 name="closePermute" class="text-center  display-4">Lavorazione permute</h1> -->
+											<button id="btnPosizione" type="button" class="btn btn-info btn-lg col-xs-12 col-sm-12 col-md-12" data-toggle="collapse" href="#divClosePermute" aria-expanded="false" aria-controls="divClosePermute">
+												Conferma
+											</button>
+										</div>
+									</div>
+								</form>
+								<form id="frmLavora"></form>
+							</form>
+						</section>
+						<!-- <section id="features">
+
+						<div class="row">
+						<div class="col-sm-12 alert alert-info">
+						<h1 name="pendingPermute" class="text-center  display-4">Permute da lavorare</h1>
+						</div>
+						</div>
+
+						<div class="row">
+						<div id="divPendingPermute" class="container-fluid alert alert-info"></div>
+						</div>
+						</section> -->
+					</section>
+					<!-- <section id="features">
+					<form id="frmSend">
+					<div class=" alert alert-info form-group row ">
+					<div class=" col-xs-6 col-md-6">
+					<button type="submit" id="btnIndietro" class="form-control btn btn-danger">
+					Indietro
+					</button>
+					</div>
+					<div class=" col-xs-6 col-md-6">
+					<button type="submit" id="btnCloseAll" class="form-control  btn btn-success" disabled>
+					Chiudi Tutto
+					</button>
+					</div>
+					</div>
+					<div class=" alert alert-info form-group row ">
+					<div class=" col-xs-6 col-md-6">
+					<button type="submit" id="btnTest" class="form-control  btn btn-success">
+					Chiudi Test
+					</button>
+					</div>
+					</div>
+					</form>
+					</section> -->
+				</div>
+			</div>
+		</section>
+		<footer>
+			<div class="container-fluid">
+				<div class="col-xs-12 col-sm-2">
+					<img src="../shared/imgs/logo.png" class="img-responsive">
+				</div>
+				<div class="col-xs-12 col-sm-2 pull-right">
+					<address>
+						<strong>Sirti</strong> Via Stamira D’Ancona 9 - 20127 Milano (MI)
+						<br>
+						<abbr title="Phone">P:</abbr> +39 02.9588.1
+					</address>
+				</div>
+			</div>
+		</footer>
+		<!-- <script src="../shared/bootstrap/js/jquery-3.1.1.min.js"></script> -->
+		<script src="../shared/bootstrap/js/bootstrap.js"></script>
+		<script src="../shared/bootstrap/js/bootstrap-toggle.min.js"></script>
+		<script src="../shared/lib/bootbox.min.js"></script>
+
+		<script src="../shared/bootstrap/js/main.js"></script>
+	</body>
+
+</html>

@@ -1,57 +1,81 @@
-    globaltextToSave = "";
+function callAndroid(jsonEventField) {
+	//var jsonInput = JSON.parse(s);
+	/*
+	 * SirtiEventHandler(jsonstring)
+	 *
+	 * IdSirti
+	 * IdOFSC
+	 * Event
+	 * IdResponse {'OK'-'KO'}
+	 * ErrorMessage{}
+	 * ParamInput{}
+	 * ParamOutput{}
+	 *
+	 */
 
-    function sendToAndroid(jsonString) {
+	var jsonEventFieldString = '';
 
-        AndroidBridge.showToast(jsonString + "! this is OFSC plugin! Do you Copy?");
-    }
+	switch (jsonEventField.Event) {
+	case "GEO":
 
+		jsonEventFieldString = SirtiBridge.SirtiEventHandler(JSON.stringify(jsonEventField));
 
-    function getFromAndroid() {
+		$.extend(true, jsonEventField, JSON.parse(jsonEventFieldString));
+		setOutputFields(jsonEventField);
+		$('#btnPosizione').attr('disabled', false);
+		$("#divConferma").show();
 
-        var stringFromAndroid = AndroidBridge.getFromAndroid();
-        return (stringFromAndroid);
+		break;
+	default:
+		jsonEventField.IdResponse = "KO";
+		jsonEventField.ErrorMessage = {
+			"EVENT" : "Evento non definito."
+		};
 
-    }
+	}
 
-    function openDialog(jsonString) {
+	if (!(jsonEventField.IdResponse === "OK")) {
+		handleErrors(jsonEventField);
+	}
+}
 
-        AndroidBridge.showDialog(jsonString);
+function setOutputFields(jsonEventField) {
 
-    }
+	for (var outFlds in jsonEventField.ParamOutput) {
+		for (var flds in jsonEventFieldOutput) {
+			if (!(jsonEventFieldOutput.hasOwnProperty(outFlds))) {
+				delete jsonEventField.ParamOutput[outFlds];
+			}
+		}
+	}
 
-    function callLibrary(jsonInput) {
-        //var jsonInput = JSON.parse(s);
-        var sEvent = jsonInput.event;
-        jsonInput.responsePayload = {}; // reset response
-        jsonInput.errorPayload = {}; // reset error
+}
 
-        switch (sEvent) {
-            case "sendToAndroid":
-                //alert('jsonInput.payload.p1:=' + jsonInput.payload.p1);
-                sendToAndroid(jsonInput.payload.p1);
-                jsonInput.responsePayload = {
-                    "result": new Date() + ': ' + "received"
-                };
-                break;
-            case "getFromAndroid":
-                jsonInput.responsePayload = {
-                    "result": new Date() + ': ' + getFromAndroid()
-                }; 
-                break;
-            case "openDialog":
-                openDialog(JSON.stringify(jsonInput.payload));
-                jsonInput.responsePayload = {
-                    "result": new Date() + ': ' + "opened"
-                };
-                break;
-            default:
-                jsonInput.responsePayload = {
-                    "result": new Date() + ': ' + "error"
-                };
-                jsonInput.errorPayload = {
-                    "errCode": "KO",
-                    "errMessage": "Method " + sEvent + " not found"
-                };
-                break;
-        }
-    }
+function handleErrors(jsonEventField) {
+	//debugger;
+	var html = '';
+	var isConfirmationDisabled = false;
+	$("#divConferma").show();
+	switch (jsonEventField.Event) {
+	case "GEO":
+		if (jsonEventField.IdResponse === "DENY") {
+			isConfirmationDisabled = true;
+			$("#divAlertHeader").hide();
+			$("#divConferma").hide();
+		}
+		break;
+	default:
+		isConfirmationDisabled = false;
+	}
+
+	html += 'Event: ' + jsonEventField.Event;
+	for (var err in jsonEventField.ErrorMessage) {
+		html += '<br>' + err + ': ' + jsonEventField.ErrorMessage[err];
+	}
+	$("#idAlert").html(html);
+	$("#idAlert").show();
+	$("#idAlert").alert();
+	// $("#idAlert").delay(200).addClass("in");
+	$('#btnPosizione').attr('disabled', isConfirmationDisabled);
+
+}

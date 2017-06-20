@@ -1,0 +1,29 @@
+CACHE MANIFEST
+
+# 1
+
+CACHE:
+./index.html
+./style.css
+./../shared/imgs/favicon.ico
+./../shared/bootstrap/css/bootstrap.css
+./../shared/bootstrap/css/bootstrap-toggle.min.css
+./../shared/bootstrap/css/base.css
+./plugin.js
+./../shared/lib/CloudToAndroidLibrary.js
+./item.png
+./items.png
+./../shared/bootstrap/js/jquery-3.1.1.min.js
+./../shared/bootstrap/js/bootstrap.js
+./../shared/lib/bootbox.min.js
+./../shared/bootstrap/js/bootstrap-toggle.min.js
+./../shared/bootstrap/js/main.js
+./geoHandlerLibrary/geoObjects.js
+./geoHandlerLibrary/geoLib.js
+//code.jquery.com/jquery-2.1.4.min.js
+./../shared/lib/jquery.serializejson.min.js
+
+FALLBACK:
+
+NETWORK:
+*
