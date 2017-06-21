@@ -51,7 +51,10 @@ function geoFindMe(jsonEventField) {
 
 function setGeoDataonJsonActivity(jsonGeoData) {
 
-	jsonGeoData.SRT_isPosition = -1;
+	//needed to avoid skip location on cloned activity
+	var isPosition = (jsonGeoData.astatus === 'started' ? -2 : -1);
+
+	jsonGeoData.SRT_isPosition = isPosition;
 	jsonGeoData.SRT_pluginPosition = 'lat:' + jsonEventField.ParamOutput.LATITUDE + ',lng:' + jsonEventField.ParamOutput.LONGITUDE;
 
 }
